@@ -4,8 +4,6 @@ A lightweight Chrome extension that applies a dark theme to `zerp.flyzipline.com
 
 ## Install For A New User
 
-### Option 1: Download As ZIP
-
 1. Download the latest ZIP:
    `https://raw.githubusercontent.com/qcao-zipline/zerp-darkmode/main/zerp-dark-mode.zip`
 2. Unzip the download to a folder on your computer.
