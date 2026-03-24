@@ -14,23 +14,6 @@ A lightweight Chrome extension that applies a dark theme to `zerp.flyzipline.com
 5. Click `Load unpacked`.
 6. Select the unzipped `zerp-darkmode-main` folder.
 
-## Update The Extension
-
-1. Download the latest ZIP again:
-   `https://github.com/qcao-zipline/zerp-darkmode/archive/refs/heads/main.zip`
-2. Replace your old unpacked folder with the new unzipped folder.
-3. Go to `chrome://extensions`.
-4. Find `ZERP Dark Mode`.
-5. Click the refresh icon on the extension card.
-
-## Local Project Files
-
-- `manifest.json`: Chrome extension manifest
-- `content.js`: dark mode styling and page behavior
-- `popup.html`: extension popup markup
-- `popup.css`: popup styles
-- `popup.js`: popup toggle logic
-
 ## Notes
 
 - This extension is designed for `https://zerp.flyzipline.com/*`
