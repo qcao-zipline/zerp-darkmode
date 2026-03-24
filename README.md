@@ -13,7 +13,8 @@ A lightweight Chrome extension that applies a dark theme to `zerp.flyzipline.com
 3. Open Chrome and go to `chrome://extensions`.
 4. Turn on `Developer mode` in the top-right corner.
 5. Click `Load unpacked`.
-6. Select the unzipped folder that contains `manifest.json`.
+6. Select the unzipped folder.
+7. You will "Zerp Dark Mode" as an extension now, click on it to turn it on.
 
 ## Notes
 
