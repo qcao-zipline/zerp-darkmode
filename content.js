@@ -15,9 +15,57 @@ let processScheduled = false;
 const pendingRoots = new Set();
 let rootListenersAttached = false;
 let historyPatched = false;
-let pendingRouteRefresh;
+let pendingRouteRefresh = [];
 let suppressObserver = false;
 let routeSettleInterval;
+const ROUTE_REFRESH_DELAYS = [120, 320, 700];
+const ROUTE_SETTLE_INTERVAL_MS = 180;
+const ROUTE_SETTLE_RUNS = 3;
+const LARGE_MUTATION_BATCH_SIZE = 12;
+
+function isNodeWithin(root, target) {
+  return root === target || (root instanceof Node && target instanceof Node && root.contains(target));
+}
+
+function clearPendingRouteRefreshes() {
+  for (const timeoutId of pendingRouteRefresh) {
+    window.clearTimeout(timeoutId);
+  }
+
+  pendingRouteRefresh = [];
+}
+
+function clearRouteSettleInterval() {
+  if (!routeSettleInterval) return;
+
+  window.clearInterval(routeSettleInterval);
+  routeSettleInterval = undefined;
+}
+
+function scheduleRouteRefreshes() {
+  clearPendingRouteRefreshes();
+
+  for (const delay of ROUTE_REFRESH_DELAYS) {
+    const timeoutId = window.setTimeout(() => {
+      handleRootRefresh();
+      scheduleProcessing(document.documentElement);
+    }, delay);
+
+    pendingRouteRefresh.push(timeoutId);
+  }
+}
+
+function normalizeProcessingRoot(root) {
+  if (
+    root === document ||
+    root === document.documentElement ||
+    root === document.body
+  ) {
+    return document.documentElement;
+  }
+
+  return root;
+}
 
 function injectStyle() {
   if (document.getElementById(STYLE_ID)) return;
@@ -131,7 +179,11 @@ function injectStyle() {
     html.${ROOT_CLASS} .zerp-section > .MuiPaper-root.MuiCard-root .MuiCardActions-root,
     html.${ROOT_CLASS} .zerp-section > .MuiPaper-root.MuiCard-root .sc-hORkcV.haQSCe,
     html.${ROOT_CLASS} .zerp-section > .MuiPaper-root.MuiCard-root .sc-hORkcV.hamBOV,
-    html.${ROOT_CLASS} .zerp-section > .MuiPaper-root.MuiCard-root .sc-hORkcV.gZThnW {
+    html.${ROOT_CLASS} .zerp-section > .MuiPaper-root.MuiCard-root .sc-hORkcV.gZThnW,
+    html.${ROOT_CLASS} .MuiPaper-root.MuiDialog-paper,
+    html.${ROOT_CLASS} .MuiDialogTitle-root,
+    html.${ROOT_CLASS} .MuiDialogContent-root,
+    html.${ROOT_CLASS} .MuiDialogActions-root {
       background: #0b1220 !important;
       background-color: #0b1220 !important;
       box-shadow: none !important;
@@ -727,7 +779,6 @@ function processElement(element) {
   ) {
     setManagedStyle(element, "border-color", toCssColor(mixColor(borderColor, THEME_BORDER, 0.82)));
   }
-
 }
 
 function enforceRootTheme() {
@@ -748,21 +799,8 @@ function refreshAfterRouteChange() {
 
   handleRootRefresh();
   scheduleProcessing(document.documentElement);
-
-  window.clearTimeout(pendingRouteRefresh);
-  pendingRouteRefresh = window.setTimeout(() => {
-    handleRootRefresh();
-    scheduleProcessing(document.documentElement);
-  }, 120);
-
-  window.setTimeout(() => {
-    handleRootRefresh();
-    scheduleProcessing(document.documentElement);
-  }, 320);
-
-  if (routeSettleInterval) {
-    window.clearInterval(routeSettleInterval);
-  }
+  scheduleRouteRefreshes();
+  clearRouteSettleInterval();
 
   let settleRuns = 0;
   routeSettleInterval = window.setInterval(() => {
@@ -770,11 +808,10 @@ function refreshAfterRouteChange() {
     scheduleProcessing(document.documentElement);
     settleRuns += 1;
 
-    if (settleRuns >= 8) {
-      window.clearInterval(routeSettleInterval);
-      routeSettleInterval = undefined;
+    if (settleRuns >= ROUTE_SETTLE_RUNS) {
+      clearRouteSettleInterval();
     }
-  }, 180);
+  }, ROUTE_SETTLE_INTERVAL_MS);
 }
 
 function patchHistoryMethods() {
@@ -815,14 +852,8 @@ function detachRootListeners() {
   document.removeEventListener("visibilitychange", handleRootRefresh);
   window.removeEventListener("popstate", refreshAfterRouteChange);
   window.removeEventListener("hashchange", refreshAfterRouteChange);
-  if (pendingRouteRefresh) {
-    window.clearTimeout(pendingRouteRefresh);
-    pendingRouteRefresh = undefined;
-  }
-  if (routeSettleInterval) {
-    window.clearInterval(routeSettleInterval);
-    routeSettleInterval = undefined;
-  }
+  clearPendingRouteRefreshes();
+  clearRouteSettleInterval();
   rootListenersAttached = false;
 }
 
@@ -857,7 +888,23 @@ function flushProcessing() {
 function scheduleProcessing(root) {
   if (!root) return;
 
-  pendingRoots.add(root);
+  const normalizedRoot = normalizeProcessingRoot(root);
+
+  if (!(normalizedRoot instanceof Node)) return;
+
+  for (const pendingRoot of pendingRoots) {
+    if (isNodeWithin(pendingRoot, normalizedRoot)) {
+      return;
+    }
+  }
+
+  for (const pendingRoot of Array.from(pendingRoots)) {
+    if (isNodeWithin(normalizedRoot, pendingRoot)) {
+      pendingRoots.delete(pendingRoot);
+    }
+  }
+
+  pendingRoots.add(normalizedRoot);
 
   if (processScheduled) return;
 
@@ -873,14 +920,21 @@ function startObserving() {
 
     for (const mutation of mutations) {
       if (mutation.type === "attributes") {
+        if (mutation.target instanceof Element) {
+          scheduleProcessing(mutation.target);
+        }
+        continue;
+      }
+
+      const addedElements = Array.from(mutation.addedNodes).filter((node) => node instanceof Element);
+
+      if (addedElements.length > LARGE_MUTATION_BATCH_SIZE) {
         scheduleProcessing(mutation.target);
         continue;
       }
 
-      mutation.addedNodes.forEach((node) => {
-        if (node instanceof Element) {
-          scheduleProcessing(node);
-        }
+      addedElements.forEach((node) => {
+        scheduleProcessing(node);
       });
     }
   });
