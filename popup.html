@@ -9,15 +9,27 @@
     <div class="wrap">
       <h1>ZERP Dark Mode</h1>
 
-      <label class="toggle-row">
-        <span>Enable dark mode</span>
-        <input id="enabled" type="checkbox" />
-      </label>
+      <div class="field">
+        <span>Theme mode</span>
 
-      <p class="hint">
-        LET THERE BE DARKNESS!!
-      </p>
+        <div class="radio-group" role="radiogroup" aria-label="Theme mode">
+          <label class="radio-option">
+            <input type="radio" name="themeMode" value="dark" />
+            <span>Dark</span>
+          </label>
 
+          <label class="radio-option">
+            <input type="radio" name="themeMode" value="light" />
+            <span>Light</span>
+          </label>
+
+          <label class="radio-option">
+            <input type="radio" name="themeMode" value="system" />
+            <span>System</span>
+          </label>
+        </div>
+      </div>
+      
       <p id="status" class="status"></p>
     </div>
 

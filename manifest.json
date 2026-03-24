@@ -1,5 +1,5 @@
 {
-  "manifest_version": 1,
+  "manifest_version": 3,
   "name": "ZERP Dark Mode",
   "version": "0.1.0",
   "description": "Toggle dark mode for zerp.flyzipline.com",

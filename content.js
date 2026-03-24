@@ -9,6 +9,7 @@ const AVATAR_TEXT = { r: 249, g: 250, b: 251 };
 
 const managedElements = new Set();
 const originalInlineStyles = new WeakMap();
+const systemColorSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
 let observer;
 let processScheduled = false;
@@ -18,6 +19,9 @@ let historyPatched = false;
 let pendingRouteRefresh = [];
 let suppressObserver = false;
 let routeSettleInterval;
+let systemThemeListenerAttached = false;
+let currentThemeMode = "dark";
+let darkModeActive = false;
 const ROUTE_REFRESH_DELAYS = [120, 320, 700];
 const ROUTE_SETTLE_INTERVAL_MS = 180;
 const ROUTE_SETTLE_RUNS = 3;
@@ -438,6 +442,26 @@ function injectStyle() {
   `;
 
   document.documentElement.appendChild(style);
+}
+
+function removeInjectedStyle() {
+  document.getElementById(STYLE_ID)?.remove();
+}
+
+function getStoredThemeMode(result) {
+  if (result.themeMode === "dark" || result.themeMode === "light" || result.themeMode === "system") {
+    return result.themeMode;
+  }
+
+  if (typeof result.darkModeEnabled === "boolean") {
+    return result.darkModeEnabled ? "dark" : "light";
+  }
+
+  return "dark";
+}
+
+function shouldEnableDarkMode(themeMode) {
+  return themeMode === "dark" || (themeMode === "system" && systemColorSchemeQuery.matches);
 }
 
 function parseColor(value) {
@@ -878,6 +902,11 @@ function processTree(root) {
 function flushProcessing() {
   processScheduled = false;
 
+  if (!document.documentElement.classList.contains(ROOT_CLASS)) {
+    pendingRoots.clear();
+    return;
+  }
+
   for (const root of pendingRoots) {
     processTree(root);
   }
@@ -955,6 +984,9 @@ function stopObserving() {
 }
 
 function enableDarkMode() {
+  if (darkModeActive) return;
+
+  darkModeActive = true;
   injectStyle();
   document.documentElement.classList.add(ROOT_CLASS);
   enforceRootTheme();
@@ -964,30 +996,73 @@ function enableDarkMode() {
 }
 
 function disableDarkMode() {
+  darkModeActive = false;
   stopObserving();
   detachRootListeners();
+  pendingRoots.clear();
+  processScheduled = false;
   restoreManagedStyles();
   document.documentElement.classList.remove(ROOT_CLASS);
+  removeInjectedStyle();
+}
+
+function handleSystemThemeChange() {
+  if (currentThemeMode !== "system") return;
+
+  if (shouldEnableDarkMode(currentThemeMode)) {
+    enableDarkMode();
+  } else {
+    disableDarkMode();
+  }
+}
+
+function attachSystemThemeListener() {
+  if (systemThemeListenerAttached) return;
+
+  systemColorSchemeQuery.addEventListener("change", handleSystemThemeChange);
+  systemThemeListenerAttached = true;
+}
+
+function detachSystemThemeListener() {
+  if (!systemThemeListenerAttached) return;
+
+  systemColorSchemeQuery.removeEventListener("change", handleSystemThemeChange);
+  systemThemeListenerAttached = false;
+}
+
+function applyThemeMode(themeMode) {
+  currentThemeMode = themeMode;
+
+  if (themeMode === "system") {
+    attachSystemThemeListener();
+  } else {
+    detachSystemThemeListener();
+  }
+
+  if (shouldEnableDarkMode(themeMode)) {
+    enableDarkMode();
+  } else {
+    disableDarkMode();
+  }
 }
 
 function syncState() {
-  chrome.storage.local.get({ darkModeEnabled: true }, (result) => {
-    if (result.darkModeEnabled) {
-      enableDarkMode();
-    } else {
-      disableDarkMode();
-    }
+  chrome.storage.local.get({ themeMode: "dark", darkModeEnabled: true }, (result) => {
+    applyThemeMode(getStoredThemeMode(result));
   });
 }
 
 syncState();
 
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === "local" && changes.darkModeEnabled) {
-    if (changes.darkModeEnabled.newValue) {
-      enableDarkMode();
-    } else {
-      disableDarkMode();
-    }
+  if (area !== "local") return;
+
+  if (changes.themeMode) {
+    applyThemeMode(getStoredThemeMode({ themeMode: changes.themeMode.newValue }));
+    return;
+  }
+
+  if (changes.darkModeEnabled) {
+    applyThemeMode(getStoredThemeMode({ darkModeEnabled: changes.darkModeEnabled.newValue }));
   }
 });

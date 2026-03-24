@@ -1,5 +1,23 @@
-const enabledCheckbox = document.getElementById("enabled");
+const themeModeInputs = document.querySelectorAll('input[name="themeMode"]');
 const statusEl = document.getElementById("status");
+
+function getStoredThemeMode(result) {
+  if (result.themeMode === "dark" || result.themeMode === "light" || result.themeMode === "system") {
+    return result.themeMode;
+  }
+
+  if (typeof result.darkModeEnabled === "boolean") {
+    return result.darkModeEnabled ? "dark" : "light";
+  }
+
+  return "dark";
+}
+
+function setSelectedThemeMode(themeMode) {
+  themeModeInputs.forEach((input) => {
+    input.checked = input.value === themeMode;
+  });
+}
 
 function setStatus(message) {
   statusEl.textContent = message;
@@ -10,14 +28,24 @@ function setStatus(message) {
   }, 1500);
 }
 
-chrome.storage.local.get({ darkModeEnabled: true }, (result) => {
-  enabledCheckbox.checked = result.darkModeEnabled;
+chrome.storage.local.get({ themeMode: "dark", darkModeEnabled: true }, (result) => {
+  setSelectedThemeMode(getStoredThemeMode(result));
 });
 
-enabledCheckbox.addEventListener("change", () => {
-  const enabled = enabledCheckbox.checked;
+themeModeInputs.forEach((input) => {
+  input.addEventListener("change", () => {
+    if (!input.checked) return;
 
-  chrome.storage.local.set({ darkModeEnabled: enabled }, () => {
-    setStatus(enabled ? "Dark mode enabled" : "Dark mode disabled");
+    const themeMode = input.value;
+
+    chrome.storage.local.set({ themeMode }, () => {
+      setStatus(
+        themeMode === "system"
+          ? "Following system theme"
+          : themeMode === "dark"
+            ? "Dark mode enabled"
+            : "Light mode enabled"
+      );
+    });
   });
 });
