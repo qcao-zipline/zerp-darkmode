@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "ZERP Dark Mode",
+  "version": "0.1.0",
+  "description": "Toggle dark mode for zerp.flyzipline.com",
+  "permissions": ["storage"],
+  "host_permissions": ["https://zerp.flyzipline.com/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "ZERP Dark Mode"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://zerp.flyzipline.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_origin_as_fallback": true
+    }
+  ]
+}
