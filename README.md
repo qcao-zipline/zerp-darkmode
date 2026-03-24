@@ -2,7 +2,7 @@
 
 A lightweight Chrome extension that applies a dark theme to `zerp.flyzipline.com`.
 
-<img width="1917" height="840" alt="image" src="https://github.com/user-attachments/assets/7d9f5ce3-8732-4ebe-a4e4-6dfd64c9d8d5" />
+<img width="1917" height="841" alt="image" src="https://github.com/user-attachments/assets/05e63337-7e2b-42e2-aee4-f38377d56418" />
 
 
 ## Install For A New User
