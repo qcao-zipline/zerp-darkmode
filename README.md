@@ -1,4 +1,4 @@
-# ZERP Dark Mode
+# 🌙 ZERP Dark Mode 🌙
 
 A lightweight Chrome extension that applies a dark theme to `zerp.flyzipline.com`.
 
