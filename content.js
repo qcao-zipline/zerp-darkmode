@@ -204,6 +204,7 @@ function injectStyle() {
     html.${ROOT_CLASS} .MuiDataGrid-columnHeaders,
     html.${ROOT_CLASS} .MuiDataGrid-row--borderBottom,
     html.${ROOT_CLASS} .MuiDataGrid-columnHeader,
+    html.${ROOT_CLASS} .MuiDataGrid-cell,
     html.${ROOT_CLASS} .MuiDataGrid-filler,
     html.${ROOT_CLASS} .MuiDataGrid-scrollbarFiller,
     html.${ROOT_CLASS} .MuiDataGrid-columnSeparator,
@@ -283,6 +284,25 @@ function injectStyle() {
     html.${ROOT_CLASS} .MuiCheckbox-root.Mui-checked .MuiSvgIcon-root {
       color: #93c5fd !important;
       fill: currentColor !important;
+    }
+
+    html.${ROOT_CLASS} .MuiSvgIcon-root {
+      color: #e5e7eb !important;
+    }
+
+    html.${ROOT_CLASS} .MuiSvgIcon-root path,
+    html.${ROOT_CLASS} .MuiSvgIcon-root rect,
+    html.${ROOT_CLASS} .MuiSvgIcon-root circle,
+    html.${ROOT_CLASS} .MuiSvgIcon-root polygon {
+      fill: currentColor !important;
+    }
+
+    html.${ROOT_CLASS} .MuiDataGrid-booleanCell[data-testid="CheckIcon"] {
+      color: #22c55e !important;
+    }
+
+    html.${ROOT_CLASS} .MuiDataGrid-booleanCell[data-testid="CloseIcon"] {
+      color: #ef4444 !important;
     }
 
     html.${ROOT_CLASS} .MuiToggleButtonGroup-root,
