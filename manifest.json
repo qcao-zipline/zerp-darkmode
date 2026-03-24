@@ -5,7 +5,17 @@
   "description": "Toggle dark mode for zerp.flyzipline.com",
   "permissions": ["storage"],
   "host_permissions": ["https://zerp.flyzipline.com/*"],
+  "icons": {
+    "16": "icons/dm-icon.png",
+    "32": "icons/dm-icon.png",
+    "48": "icons/dm-icon.png",
+    "128": "icons/dm-icon.png"
+  },
   "action": {
+    "default_icon": {
+      "16": "icons/dm-icon.png",
+      "32": "icons/dm-icon.png"
+    },
     "default_popup": "popup.html",
     "default_title": "ZERP Dark Mode"
   },

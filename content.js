@@ -317,6 +317,42 @@ function injectStyle() {
       color: inherit;
     }
 
+    html.${ROOT_CLASS} .MuiChip-root {
+      color: #e5e7eb !important;
+      -webkit-text-fill-color: #e5e7eb !important;
+      border-radius: 9999px !important;
+      border: 1px solid transparent !important;
+      box-shadow: none !important;
+    }
+
+    html.${ROOT_CLASS} .MuiChip-filled,
+    html.${ROOT_CLASS} .MuiChip-filledDefault {
+      background-color: #334155 !important;
+      border-color: #475569 !important;
+    }
+
+    html.${ROOT_CLASS} .MuiChip-outlined,
+    html.${ROOT_CLASS} .MuiChip-outlinedDefault {
+      background-color: rgba(51, 65, 85, 0.28) !important;
+      border-color: #64748b !important;
+    }
+
+    html.${ROOT_CLASS} .MuiChip-clickable:hover,
+    html.${ROOT_CLASS} .MuiChip-clickable:focus-visible,
+    html.${ROOT_CLASS} .MuiChip-deletable:hover,
+    html.${ROOT_CLASS} .MuiChip-deletable:focus-visible {
+      background-color: #3f4d63 !important;
+    }
+
+    html.${ROOT_CLASS} .MuiChip-label,
+    html.${ROOT_CLASS} .MuiChip-avatar,
+    html.${ROOT_CLASS} .MuiChip-icon,
+    html.${ROOT_CLASS} .MuiChip-deleteIcon {
+      color: inherit !important;
+      -webkit-text-fill-color: currentColor !important;
+      fill: currentColor !important;
+    }
+
     html.${ROOT_CLASS} table {
       background: #111827 !important;
       color: #e5e7eb !important;
