@@ -1,7 +1,7 @@
 const STYLE_ID = "zerp-dark-mode-style";
 const ROOT_CLASS = "zerp-dark-mode";
 const THEME_BACKGROUND = { r: 11, g: 18, b: 32 };
-const THEME_SURFACE = { r: 17, g: 24, b: 39 };
+const THEME_SURFACE = { r: 11, g: 18, b: 32 };
 const THEME_TEXT = { r: 229, g: 231, b: 235 };
 const THEME_BORDER = { r: 75, g: 85, b: 99 };
 const AVATAR_SURFACE = { r: 107, g: 114, b: 128 };
@@ -117,7 +117,7 @@ function injectStyle() {
     html.${ROOT_CLASS} [class*="popover"],
     html.${ROOT_CLASS} [class*="menu"],
     html.${ROOT_CLASS} [class*="dropdown"] {
-      background-color: #111827 !important;
+      background-color: #0b1220 !important;
       color: #e5e7eb !important;
       border-color: #374151 !important;
     }
@@ -141,6 +141,13 @@ function injectStyle() {
     html.${ROOT_CLASS} .sc-bFYcde.gyntgu,
     html.${ROOT_CLASS} .sc-bsOfxk.cCScCG,
     html.${ROOT_CLASS} .sc-hXyblB.kQWbGf,
+    html.${ROOT_CLASS} .zerp-brick,
+    html.${ROOT_CLASS} [data-testid="brick-inner"],
+    html.${ROOT_CLASS} .sc-jJhUpn.ePxkDo,
+    html.${ROOT_CLASS} .sc-Asyiq.jrjKLz,
+    html.${ROOT_CLASS} .sc-gBIzgl.ftCOgP,
+    html.${ROOT_CLASS} .sc-gBIzgl.ftCOgP .inner,
+    html.${ROOT_CLASS} .sc-keRagD.ceLVgk,
     html.${ROOT_CLASS} div:has(> .zerp-section),
     html.${ROOT_CLASS} div:has(> div > .zerp-section),
     html.${ROOT_CLASS} div:has(> .MuiPaper-root.MuiCard-root),
@@ -150,7 +157,7 @@ function injectStyle() {
     html.${ROOT_CLASS} .zerp-hsegment,
     html.${ROOT_CLASS} div:has(> h2.heading-block),
     html.${ROOT_CLASS} section:has(> h2.heading-block) {
-      background-color: #111827 !important;
+      background-color: #0b1220 !important;
       color: #e5e7eb !important;
       border-color: #374151 !important;
       background-clip: padding-box !important;
@@ -187,7 +194,33 @@ function injectStyle() {
     html.${ROOT_CLASS} .MuiPaper-root.MuiDialog-paper,
     html.${ROOT_CLASS} .MuiDialogTitle-root,
     html.${ROOT_CLASS} .MuiDialogContent-root,
-    html.${ROOT_CLASS} .MuiDialogActions-root {
+    html.${ROOT_CLASS} .MuiDialogActions-root,
+    html.${ROOT_CLASS} .sc-fxdwpw.lbgdzM > .sc-kjGEIJ.kcBsgZ > .sc-lbpyZL.fiortM > .sc-hXyblB,
+    html.${ROOT_CLASS} .sc-fxdwpw.lbgdzM > .sc-kjGEIJ.kcBsgZ > .sc-lbpyZL.fiortM > .sc-hXyblB.sc-dMMdNl.kQWbGf.iilpFB,
+    html.${ROOT_CLASS} .sc-fxdwpw.lbgdzM > .sc-bFYcde.gyntgu > .sc-hXyblB.sc-fjRZMg.kQWbGf.IdsRz,
+    html.${ROOT_CLASS} .sc-fxdwpw.lbgdzM > .sc-bFYcde.gyntgu > .sc-hXyblB.kQWbGf,
+    html.${ROOT_CLASS} .sc-fxdwpw.lbgdzM > .sc-bsOfxk.cCScCG > .MuiPaper-root.MuiCard-root,
+    html.${ROOT_CLASS} .sc-bsOfxk.cCScCG,
+    html.${ROOT_CLASS} .sc-bsOfxk.cCScCG > .MuiPaper-root.MuiCard-root.sc-kJzonb.juPlAj.css-s18byi,
+    html.${ROOT_CLASS} .sc-bsOfxk.cCScCG > .MuiPaper-root.MuiCard-root .MuiCardContent-root.css-1qw96cp,
+    html.${ROOT_CLASS} .sc-bsOfxk.cCScCG > .MuiPaper-root.MuiCard-root .MuiCollapse-root,
+    html.${ROOT_CLASS} .sc-bsOfxk.cCScCG > .MuiPaper-root.MuiCard-root .MuiCollapse-wrapper,
+    html.${ROOT_CLASS} .sc-bsOfxk.cCScCG > .MuiPaper-root.MuiCard-root .MuiCollapse-wrapperInner,
+    html.${ROOT_CLASS} .sc-bsOfxk.cCScCG > .MuiPaper-root.MuiCard-root .MuiCardActions-root,
+    html.${ROOT_CLASS} .sc-bsOfxk.cCScCG > .MuiPaper-root.MuiCard-root .sc-hORkcV.haQSCe,
+    html.${ROOT_CLASS} .sc-bsOfxk.cCScCG > .MuiPaper-root.MuiCard-root .sc-hORkcV.hamBOV,
+    html.${ROOT_CLASS} .sc-bsOfxk.cCScCG > .MuiPaper-root.MuiCard-root .sc-hORkcV.gZThnW,
+    html.${ROOT_CLASS} .sc-hXyblB.sc-fjRZMg.kQWbGf.IdsRz,
+    html.${ROOT_CLASS} .sc-hXyblB.sc-fjRZMg.kQWbGf.IdsRz > .sc-lmcNHa.nAJcW,
+    html.${ROOT_CLASS} .sc-hXyblB.sc-fjRZMg.kQWbGf.IdsRz > .sc-eszcID.cgKeaJ,
+    html.${ROOT_CLASS} .sc-hXyblB.sc-fjRZMg.kQWbGf.IdsRz .sc-ienWRC.eGJwrC,
+    html.${ROOT_CLASS} .sc-fxdwpw.lbgdzM > .sc-kjGEIJ.kcBsgZ > .sc-lbpyZL.fiortM > .sc-hXyblB .zerp-detail,
+    html.${ROOT_CLASS} .sc-fxdwpw.lbgdzM > .sc-kjGEIJ.kcBsgZ > .sc-lbpyZL.fiortM > .sc-hXyblB .MuiPaper-root.MuiCard-root,
+    html.${ROOT_CLASS} .sc-fxdwpw.lbgdzM > .sc-kjGEIJ.kcBsgZ > .sc-lbpyZL.fiortM > .sc-hXyblB .MuiCardContent-root,
+    html.${ROOT_CLASS} .sc-fxdwpw.lbgdzM > .sc-kjGEIJ.kcBsgZ > .sc-lbpyZL.fiortM > .sc-hXyblB .MuiCollapse-root,
+    html.${ROOT_CLASS} .sc-fxdwpw.lbgdzM > .sc-kjGEIJ.kcBsgZ > .sc-lbpyZL.fiortM > .sc-hXyblB .MuiCollapse-wrapper,
+    html.${ROOT_CLASS} .sc-fxdwpw.lbgdzM > .sc-kjGEIJ.kcBsgZ > .sc-lbpyZL.fiortM > .sc-hXyblB .MuiCollapse-wrapperInner,
+    html.${ROOT_CLASS} .sc-fxdwpw.lbgdzM > .sc-kjGEIJ.kcBsgZ > .sc-lbpyZL.fiortM > .sc-hXyblB .MuiCardActions-root {
       background: #0b1220 !important;
       background-color: #0b1220 !important;
       box-shadow: none !important;
@@ -210,7 +243,7 @@ function injectStyle() {
     html.${ROOT_CLASS} .MuiDataGrid-columnSeparator,
     html.${ROOT_CLASS} .MuiDataGrid-columnHeaderTitleContainer,
     html.${ROOT_CLASS} .MuiDataGrid-columnHeaderDraggableContainer {
-      background-color: #111827 !important;
+      background-color: #0b1220 !important;
       color: #e5e7eb !important;
       border-color: #374151 !important;
     }
@@ -430,7 +463,7 @@ function injectStyle() {
     }
 
     html.${ROOT_CLASS} table {
-      background: #111827 !important;
+      background: #0b1220 !important;
       color: #e5e7eb !important;
       border-color: #374151 !important;
     }
