@@ -316,6 +316,50 @@ function injectStyle() {
       border-color: #93c5fd !important;
     }
 
+    html.${ROOT_CLASS} .MuiAutocomplete-popper,
+    html.${ROOT_CLASS} .MuiPopper-root.MuiAutocomplete-popper,
+    html.${ROOT_CLASS} .MuiAutocomplete-paper,
+    html.${ROOT_CLASS} .MuiAutocomplete-listbox {
+      background-color: #0b1220 !important;
+      color: #e5e7eb !important;
+      border-color: #374151 !important;
+    }
+
+    html.${ROOT_CLASS} .MuiAutocomplete-paper {
+      box-shadow: none !important;
+      border: 1px solid #374151 !important;
+    }
+
+    html.${ROOT_CLASS} .MuiAutocomplete-option {
+      background-color: #0b1220 !important;
+      color: #e5e7eb !important;
+    }
+
+    html.${ROOT_CLASS} .MuiAutocomplete-option.Mui-focused,
+    html.${ROOT_CLASS} .MuiAutocomplete-option[aria-selected="true"],
+    html.${ROOT_CLASS} .MuiAutocomplete-option:hover {
+      background-color: #1f2937 !important;
+      color: #f8fafc !important;
+    }
+
+    html.${ROOT_CLASS} .MuiTooltip-popper,
+    html.${ROOT_CLASS} .MuiPopper-root.MuiTooltip-popper,
+    html.${ROOT_CLASS} .MuiTooltip-tooltip {
+      background-color: #0b1220 !important;
+      color: #e5e7eb !important;
+      border-color: #374151 !important;
+    }
+
+    html.${ROOT_CLASS} .MuiTooltip-tooltip {
+      border: 1px solid #374151 !important;
+      box-shadow: none !important;
+    }
+
+    html.${ROOT_CLASS} .MuiTooltip-arrow,
+    html.${ROOT_CLASS} .MuiTooltip-arrow::before {
+      color: #0b1220 !important;
+    }
+
     html.${ROOT_CLASS} .MuiRadio-root,
     html.${ROOT_CLASS} .MuiRadio-root .MuiSvgIcon-root,
     html.${ROOT_CLASS} .MuiCheckbox-root,
