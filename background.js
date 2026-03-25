@@ -1,6 +1,4 @@
 const UPDATE_INFO_URL = "https://raw.githubusercontent.com/qcao-zipline/zerp-darkmode/main/update.json";
-const UPDATE_CHECK_ALARM = "check-for-updates";
-const UPDATE_CHECK_PERIOD_MINUTES = 360;
 const currentVersion = chrome.runtime.getManifest().version;
 
 function parseVersion(version) {
@@ -64,25 +62,10 @@ async function checkForUpdates() {
   }
 }
 
-function ensureUpdateAlarm() {
-  chrome.alarms.create(UPDATE_CHECK_ALARM, {
-    delayInMinutes: 1,
-    periodInMinutes: UPDATE_CHECK_PERIOD_MINUTES,
-  });
-}
-
 chrome.runtime.onInstalled.addListener(() => {
-  ensureUpdateAlarm();
   void checkForUpdates();
 });
 
 chrome.runtime.onStartup.addListener(() => {
-  ensureUpdateAlarm();
   void checkForUpdates();
-});
-
-chrome.alarms.onAlarm.addListener((alarm) => {
-  if (alarm.name === UPDATE_CHECK_ALARM) {
-    void checkForUpdates();
-  }
 });

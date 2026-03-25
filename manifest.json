@@ -3,7 +3,7 @@
   "name": "ZERP Dark Mode",
   "version": "0.2.0",
   "description": "Toggle dark mode for zerp.flyzipline.com",
-  "permissions": ["storage", "alarms"],
+  "permissions": ["storage"],
   "host_permissions": [
     "https://zerp.flyzipline.com/*",
     "https://raw.githubusercontent.com/*"
