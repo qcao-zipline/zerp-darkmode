@@ -475,6 +475,27 @@ function injectStyle() {
       fill: currentColor !important;
     }
 
+    html.${ROOT_CLASS} [data-testid="delete-Not Started"] {
+      background-color: #7f1d1d !important;
+      border-color: #b91c1c !important;
+      color: #ffffff !important;
+      -webkit-text-fill-color: #ffffff !important;
+    }
+
+    html.${ROOT_CLASS} [data-testid="delete-In Progress"] {
+      background-color: #854d0e !important;
+      border-color: #a16207 !important;
+      color: #ffffff !important;
+      -webkit-text-fill-color: #ffffff !important;
+    }
+
+    html.${ROOT_CLASS} [data-testid="delete-Completed"] {
+      background-color: #166534 !important;
+      border-color: #15803d !important;
+      color: #ffffff !important;
+      -webkit-text-fill-color: #ffffff !important;
+    }
+
     html.${ROOT_CLASS} [data-testid="issue-status-UNRESOLVED"] {
       background-color: #b91c1c !important;
       border-color: #dc2626 !important;
