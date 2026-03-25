@@ -226,6 +226,17 @@ function injectStyle() {
       box-shadow: none !important;
     }
 
+    html.${ROOT_CLASS} .zerp-hsegment:has(> .sc-flQbIK.bold),
+    html.${ROOT_CLASS} .zerp-hsegment:has(> .sc-flQbIK.small),
+    html.${ROOT_CLASS} .zerp-hsegment:has(> .sc-jcvEFQ),
+    html.${ROOT_CLASS} .zerp-hsegment:has(> .sc-flQbIK.bold) > span,
+    html.${ROOT_CLASS} .zerp-hsegment:has(> .sc-flQbIK.small) > span,
+    html.${ROOT_CLASS} .zerp-hsegment:has(> .sc-flQbIK.small) > span > div,
+    html.${ROOT_CLASS} .zerp-hsegment:has(> .sc-jcvEFQ) > div {
+      background: transparent !important;
+      background-color: transparent !important;
+    }
+
     html.${ROOT_CLASS} .ql-container,
     html.${ROOT_CLASS} .ql-editor,
     html.${ROOT_CLASS} .ql-toolbar,
@@ -258,9 +269,8 @@ function injectStyle() {
     html.${ROOT_CLASS} .MuiOutlinedInput-notchedOutline legend,
     html.${ROOT_CLASS} .MuiOutlinedInput-notchedOutline legend span {
       color: transparent !important;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      max-width: 0 !important;
+      opacity: 1 !important;
+      visibility: visible !important;
     }
 
     html.${ROOT_CLASS} .MuiInputBase-root,
@@ -289,6 +299,9 @@ function injectStyle() {
     html.${ROOT_CLASS} .MuiInputLabel-root.MuiFormLabel-filled,
     html.${ROOT_CLASS} .MuiInputLabel-shrink {
       color: #93c5fd !important;
+      background-color: #0b1220 !important;
+      padding: 0 6px !important;
+      z-index: 3 !important;
     }
 
     html.${ROOT_CLASS} .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline,
@@ -460,6 +473,49 @@ function injectStyle() {
       color: inherit !important;
       -webkit-text-fill-color: currentColor !important;
       fill: currentColor !important;
+    }
+
+    html.${ROOT_CLASS} [data-testid="issue-status-UNRESOLVED"] {
+      background-color: #b91c1c !important;
+      border-color: #dc2626 !important;
+      color: #ffffff !important;
+      -webkit-text-fill-color: #ffffff !important;
+    }
+
+    html.${ROOT_CLASS} [data-testid="issue-status-UNRESOLVED"] span {
+      color: #ffffff !important;
+      -webkit-text-fill-color: #ffffff !important;
+    }
+
+    html.${ROOT_CLASS} [data-testid="issue-status-RESOLVED"] {
+      background-color: #15803d !important;
+      border-color: #16a34a !important;
+      color: #ffffff !important;
+      -webkit-text-fill-color: #ffffff !important;
+    }
+
+    html.${ROOT_CLASS} [data-testid="issue-status-RESOLVED"] span {
+      color: #ffffff !important;
+      -webkit-text-fill-color: #ffffff !important;
+    }
+
+    html.${ROOT_CLASS} [data-zerp-runner-task="true"],
+    html.${ROOT_CLASS} [data-zerp-runner-task="true"] > div,
+    html.${ROOT_CLASS} [data-zerp-runner-task="true"] .zerp-hsegment,
+    html.${ROOT_CLASS} [data-zerp-runner-task="true"] .sc-hORkcV.haQSCe,
+    html.${ROOT_CLASS} [data-zerp-runner-task="true"] .sc-kHpCdB.ihbBdq,
+    html.${ROOT_CLASS} [data-zerp-runner-task="true"] .sc-flQbIK,
+    html.${ROOT_CLASS} [data-zerp-runner-task="true"] .sc-jcvEFQ {
+      background-color: #1d4f7a !important;
+      color: #e5e7eb !important;
+      border-color: #60a5fa !important;
+    }
+
+    html.${ROOT_CLASS} [data-zerp-runner-task="true"] .zerp-hsegment,
+    html.${ROOT_CLASS} [data-zerp-runner-task="true"] .sc-hORkcV.haQSCe,
+    html.${ROOT_CLASS} [data-zerp-runner-task="true"] .sc-flQbIK,
+    html.${ROOT_CLASS} [data-zerp-runner-task="true"] .sc-jcvEFQ {
+      background: transparent !important;
     }
 
     html.${ROOT_CLASS} table {
@@ -823,9 +879,33 @@ function isAvatarBadge(element, styles, backgroundColor) {
   return isNeutralColor(backgroundColor);
 }
 
+function isRunnerTaskContainer(element) {
+  if (!(element instanceof HTMLElement)) return false;
+
+  const text = element.textContent
+    ? element.textContent.replace(/\s+/g, " ").trim().toLowerCase()
+    : "";
+
+  if (!text) return false;
+
+  const className = typeof element.className === "string" ? element.className : "";
+
+  if (!className.includes("sc-lncAYT")) return false;
+
+  return (
+    text.includes("maintenance task requested") ||
+    text.includes("maintenance task completed")
+  );
+}
+
 function processElement(element) {
   if (!(element instanceof HTMLElement) || isMediaElement(element)) return;
   if (isTextEntryElement(element) || isTextEntryWrapper(element)) return;
+
+  if (isRunnerTaskContainer(element)) {
+    element.setAttribute("data-zerp-runner-task", "true");
+  }
+
   const styles = window.getComputedStyle(element);
   const backgroundColor = parseColor(styles.backgroundColor);
   const textColor = parseColor(styles.color);
